@@ -23,6 +23,8 @@ function Quiz() {
   const [userAnswers, setUserAnswers] = useState(initialAnswers); // State to store the selected answers
   const [currentQuestion, setCurrentQuestion] = useState(0); // State to track the current question
 
+  const selectedAnswer = userAnswers[currentQuestion]; // Get the selected answer for the current question null or option.
+
   function handleSelectOption(option) {
     const newUserAnswers = [...userAnswers];
     newUserAnswers[currentQuestion] = option; // Update the selected answer for the current question
@@ -52,8 +54,8 @@ function Quiz() {
       ))}
 
       <div className="nav-buttons">
-        <button onClick={goToPreviousQuestion} disabled={currentQuestion === 0}>{" "}Previous {" "}</button>
-        <button onClick={goToNextQuestion}>Next</button>
+        <button onClick={goToPreviousQuestion} disabled={currentQuestion === 0}>{" "}Previous{" "}</button>
+        <button onClick={goToNextQuestion} disabled={!selectedAnswer}>{" "}Next{" "}</button>
       </div>
     </div>  
   );
