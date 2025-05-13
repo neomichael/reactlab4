@@ -29,6 +29,18 @@ function Quiz() {
     setUserAnswers(newUserAnswers); // Update the state with the new answers
   }
   
+  function goToNextQuestion() {
+    if (currentQuestion < quizBank.length - 1) {
+      setCurrentQuestion(currentQuestion + 1); // Move to the next question
+    }
+  }
+
+  function goToPreviousQuestion() {
+    if (currentQuestion > 0) {
+      setCurrentQuestion(currentQuestion - 1); // Move to the previous question
+    }
+  }
+
   return (
     <div>
       <h2>Question 1</h2>
@@ -39,11 +51,9 @@ function Quiz() {
         <button className="option" onClick={() =>handleSelectOption(option)}>{option}</button>
       ))}
 
-      <p>Selected Option: {option}</p>
-
       <div className="nav-buttons">
-        <button>Previous</button>
-        <button>Next</button>
+        <button onClick={goToPreviousQuestion} disabled={currentQuestion === 0}>{" "}Previous {" "}</button>
+        <button onClick={goToNextQuestion}>Next</button>
       </div>
     </div>  
   );
