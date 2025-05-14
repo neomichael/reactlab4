@@ -91,7 +91,7 @@ h3 {
 
 /* Restart button styling */
 .restart-button {
-  display: block;
+  display: none;
   margin: 20px auto;
   padding: 10px 20px;
   border: none;
@@ -112,4 +112,11 @@ h3 {
   font-size: 1.4em;
   text-align: center;
   margin: 20px 0;
+}
+
+.user-score {
+  display: none;
+  text-align: left;
+  font-size: 1.0em;
+  color: #42a5f5;
 }

@@ -19,39 +19,81 @@ function Quiz() {
         },
     ];
 
-    const initialAnswers = [null, null, null];
-    
-    // State to keep track of the user's answers
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+    const initialAnswers =[null, null, null];
+
     const [userAnswers, setUserAnswers] = useState(initialAnswers);
 
-    // State to keep track of the current question index
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(2);
+    const [isQuizCompleted, setIsQuizCompleted] = useState(false);
 
-    // State to keep track of the score
     const [score, setScore] = useState(0);
 
-    // State to keep track of the selected option
-    const [optionSelected, setOptionSelected] = useState("None");
+    function handleSelectOption(selectedOption) {
+        const updatedAnswers = [...userAnswers];
+        updatedAnswers[currentQuestionIndex] = selectedOption;
 
-    function handleSelectOption(option) {
-
+        setUserAnswers(updatedAnswers);
     }
 
+    function userFinalScore() {
+        const correctAnswers = quiz_bank.filter((question, index) => question.answer === userAnswers[index]);
+        setScore(correctAnswers.length);
+        console.log("Your score is: " + correctAnswers.length);
+        // update UI with final score
+        document.querySelector('.user-score').style.display = "block";
+        document.querySelector('.user-score').style.color = "green";
+    }
+ 
+    function handleQuizNavigation(direction) {
+        if (direction === 'next') {
+            if (currentQuestionIndex < quiz_bank.length - 1) {
+                setCurrentQuestionIndex(currentQuestionIndex + 1);
+                console.log("Current question index: " + currentQuestionIndex);
+                }
+            else {
+                setIsQuizCompleted(true);
+                const correctAnswers = quiz_bank.filter((question, index) => question.answer === userAnswers[index]);
+                setScore(correctAnswers.length);
+                console.log("Current question index: " + currentQuestionIndex);
+                userFinalScore(); // UI update final score
+            }
+        } else if (direction === 'prev') {
+            if (currentQuestionIndex > 0) {
+                setCurrentQuestionIndex(currentQuestionIndex - 1);
+                console.log("Current question index: " + currentQuestionIndex);
+            } else {
+                setCurrentQuestionIndex(0);
+                console.log("Current question index: " + currentQuestionIndex);
+            }
+        } 
+    }
+    
     return (
         <div>
-            <h2>Question 1</h2>
-            <p className='question'>{quiz_bank[1].question}</p>
-            {currentQuestionIndex.options.map(option => (
+            <h2>Question</h2>
+            <p className='question'>{currentQuestionIndex + 1 + ". " + quiz_bank[currentQuestionIndex].question}</p>
+            {quiz_bank[currentQuestionIndex].options.map(option => (
                 <button className='option' onClick={() => handleSelectOption(option)}>
                     {" "}
                     {option}
                     {" "}
                 </button>
             ))}
-
+            
+            <div>
+                <h2>Your Answer</h2>
+                <p className='score'>{userAnswers[currentQuestionIndex]}</p>
+                <p className='user-score'>Your final score : {score}</p>
+            </div>
+            
             <div className="nav-buttons">
-                <button className='prev-button'>Previous</button>
-                <button className="next-button">Next</button>
+                <button className='nav-buttons' onClick={() => handleQuizNavigation("prev")}>
+                    Previous
+                </button>  
+                <button className="nav-buttons"  onClick={() => handleQuizNavigation("next")}>
+                    Next
+                </button>
             </div>    
         </div>
 
